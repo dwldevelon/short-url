@@ -50,7 +50,7 @@ public class ShortUrlOpsServiceImpl implements ShortUrlOpsService {
 
     @Override
     public void setCount(String tag, int count) {
-        redisTemplate.opsForHash().put("shortUrlCount", tag, "count");
+        redisTemplate.opsForHash().put("shortUrlCount", tag, String.valueOf(count));
     }
 
     @Override
