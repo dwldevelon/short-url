@@ -3,16 +3,15 @@ package com.suitwe.shorturl.config;
 import com.suitwe.shorturl.dao.ShortUrlDao;
 import com.suitwe.shorturl.entity.ShortUrl;
 import com.suitwe.shorturl.service.ShortUrlOpsService;
+import com.suitwe.shorturl.service.ShortUrlService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.annotation.PreDestroy;
+import java.util.*;
 
 /**
  * 启动运行类
@@ -27,6 +26,8 @@ public class SystemInit implements CommandLineRunner {
     private ShortUrlOpsService shortUrlOpsService;
     @Autowired
     private ShortUrlDao shortUrlDao;
+    @Autowired
+    private ShortUrlService shortUrlService;
 
     @Override
     public void run(String... strings) {
@@ -63,5 +64,15 @@ public class SystemInit implements CommandLineRunner {
         shortUrlOpsService.putCount(counts);
         shortUrlOpsService.putUrls(urls);
         Logger.getLogger(this.getClass()).info("短网址信息存放缓存完毕...");
+    }
+
+
+    /**
+     * 系统关闭前执行任务
+     */
+    @PreDestroy
+    public void destroy() {
+        // 保存访问计数
+        shortUrlService.saveCount2Db();
     }
 }

@@ -3,6 +3,8 @@ package com.suitwe.shorturl.dao;
 import com.suitwe.shorturl.entity.ShortUrl;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /**
  * 短连接dao层操作
  *
@@ -18,4 +20,7 @@ public interface ShortUrlDao extends JpaRepository<ShortUrl, Integer> {
      * @return 数据记录
      */
     ShortUrl findByTag(String tag);
+
+    List<ShortUrl> findByTag(List<String> tagList);
+
 }

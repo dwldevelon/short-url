@@ -46,7 +46,7 @@ public class ShortUrlApplicationTests {
 
     @Test
     public void md5ConvertTest() {
-        ConvertUtil convertUtil = new Md5ConvertUtil();
+        ConvertUtil convertUtil = Md5ConvertUtil.getInstance();
         Random r = new Random();
         int length = r.nextInt(13) + 4;
         int charset = r.nextInt(5);
@@ -63,7 +63,7 @@ public class ShortUrlApplicationTests {
 
     @Test
     public void md5ConvertCheckTest() {
-        ConvertUtil convertUtil = new Md5ConvertUtil();
+        ConvertUtil convertUtil = Md5ConvertUtil.getInstance();
         Random r = new Random();
         int length = r.nextInt(13) + 4;
         int charset = r.nextInt(5);
@@ -81,7 +81,7 @@ public class ShortUrlApplicationTests {
 
     @Test
     public void uuidConvertTest() {
-        ConvertUtil convertUtil = new UuidConvertUtil();
+        ConvertUtil convertUtil = UuidConvertUtil.getInstance();
         Random r = new Random();
         int length = r.nextInt(13) + 4;
         int charset = r.nextInt(5);
@@ -98,7 +98,7 @@ public class ShortUrlApplicationTests {
 
     @Test
     public void uuidConvertCheckTest() {
-        ConvertUtil convertUtil = new UuidConvertUtil();
+        ConvertUtil convertUtil = UuidConvertUtil.getInstance();
         Random r = new Random();
         int length = r.nextInt(13) + 4;
         int charset = r.nextInt(5);

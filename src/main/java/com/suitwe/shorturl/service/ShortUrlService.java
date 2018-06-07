@@ -36,4 +36,9 @@ public interface ShortUrlService {
      * @return 短网址结果
      */
     String generateShortUrl(String url, int type, int length, int generator);
+
+    /**
+     * 将缓存访问计数存到数据库
+     */
+    void saveCount2Db();
 }

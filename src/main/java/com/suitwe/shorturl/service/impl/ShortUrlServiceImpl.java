@@ -8,10 +8,14 @@ import com.suitwe.shorturl.utils.convert.ConvertUtil;
 import com.suitwe.shorturl.utils.convert.Md5ConvertUtil;
 import com.suitwe.shorturl.utils.convert.UuidConvertUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 短网址操作实现
@@ -68,6 +72,32 @@ public class ShortUrlServiceImpl implements ShortUrlService {
             }
         }
         return null;
+    }
+
+    @Override
+    /**
+     * 每小时存储一次
+     */
+    @Scheduled(cron = "0 0 0/1 * * ? ")
+    public void saveCount2Db() {
+        // 获取缓存访问计数
+        Map<Object, Object> map = shortUrlOpsService.getAllCount();
+        LinkedList<String> tagList = new LinkedList<>();
+        map.forEach((k, v) -> tagList.add(k.toString()));
+
+        // 查询对象列表
+        List<ShortUrl> shortUrlList = shortUrlDao.findByTag(tagList);
+
+        // 更新访问计数
+        shortUrlList.forEach(url -> url.setCount(Integer.valueOf((String) map.get(url.getTag()))));
+
+        // 分批存入数据库，5000条一次
+        int times = (int) Math.ceil(shortUrlList.size() / 5000.0);
+        for (int i = 0; i < times; i++) {
+            List<ShortUrl> urlList = shortUrlList
+                    .subList(i * 5000, (i + 1) * 5000 < shortUrlList.size() ? (i + 1) * 5000 : shortUrlList.size());
+            shortUrlDao.save(urlList);
+        }
     }
 
     @Override
