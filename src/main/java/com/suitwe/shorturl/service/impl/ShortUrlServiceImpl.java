@@ -1,6 +1,7 @@
 package com.suitwe.shorturl.service.impl;
 
 import com.suitwe.shorturl.service.ShortUrlService;
+import org.springframework.stereotype.Service;
 
 /**
  * 短网址操作实现
@@ -9,6 +10,7 @@ import com.suitwe.shorturl.service.ShortUrlService;
  * @version 1.0
  * @date 2018/6/7
  */
+@Service
 public class ShortUrlServiceImpl implements ShortUrlService{
     @Override
     public String getUrl(String tag) {
