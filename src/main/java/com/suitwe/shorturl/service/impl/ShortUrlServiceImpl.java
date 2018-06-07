@@ -45,7 +45,11 @@ public class ShortUrlServiceImpl implements ShortUrlService {
         }
         ShortUrl shortUrl = new ShortUrl(tag, url, 0, new Date());
         // 存数据库
-        shortUrlDao.save(shortUrl);
+        try {
+            shortUrlDao.save(shortUrl);
+        } catch (Exception e) {
+            return false;
+        }
         // 放入缓存
         shortUrlOpsService.setUrl(tag, url);
         return true;

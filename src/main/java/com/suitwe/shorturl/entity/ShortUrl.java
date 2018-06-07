@@ -2,6 +2,7 @@ package com.suitwe.shorturl.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
 
@@ -18,6 +19,7 @@ public class ShortUrl {
      * 主键id
      */
     @Id
+    @GeneratedValue
     private int id;
     /**
      * 短网址标记
@@ -44,7 +46,6 @@ public class ShortUrl {
     }
 
     public ShortUrl(String tag, String url, int count, Date createDate) {
-        this.id = id;
         this.tag = tag;
         this.url = url;
         this.count = count;
@@ -89,5 +90,16 @@ public class ShortUrl {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    @Override
+    public String toString() {
+        return "ShortUrl{" +
+                "id=" + id +
+                ", tag='" + tag + '\'' +
+                ", url='" + url + '\'' +
+                ", count=" + count +
+                ", createDate=" + createDate +
+                '}';
     }
 }

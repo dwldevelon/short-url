@@ -1,20 +1,22 @@
 package com.suitwe.shorturl.controller;
 
 import com.suitwe.shorturl.domain.Result;
+import com.suitwe.shorturl.domain.UrlRequest;
 import com.suitwe.shorturl.service.ShortUrlService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
+import javax.validation.Valid;
 import java.net.InetAddress;
+import java.util.Random;
 
 /**
  * 短连接操作控制器
@@ -30,8 +32,33 @@ public class ShortUrlController {
 
     @ResponseBody
     @PostMapping("/shortUrl")
-    public Result generateShortUrl() {
-        return new Result(0, "OK", null);
+    public Result generateShortUrl(@Valid UrlRequest urlRequest) {
+        if (!StringUtils.isEmpty(urlRequest.getTag())) {
+            if (shortUrlService.generateShortUrl(urlRequest.getTag(), urlRequest.getUrl())) {
+                return new Result(200, "生成成功！", urlRequest.getTag());
+            } else {
+                return new Result(0, "生成失败，该短链接已被使用", null);
+            }
+        } else {
+            // 填充默认值
+            if (urlRequest.getType() == null) {
+                urlRequest.setType(-1);
+            }
+            if (urlRequest.getLength() == null) {
+                urlRequest.setLength(4 + (new Random()).nextInt(12));
+            }
+            if (urlRequest.getGenerator() == null) {
+                urlRequest.setGenerator(1);
+            }
+
+            // 生成短链接
+            String tag = shortUrlService.generateShortUrl(urlRequest.getUrl(), urlRequest.getType(), urlRequest.getLength(), urlRequest.getGenerator());
+            if (StringUtils.isEmpty(tag)) {
+                return new Result(0, "生成失败，请重试", null);
+            } else {
+                return new Result(0, "生成成功", tag);
+            }
+        }
     }
 
     /**
