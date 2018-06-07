@@ -44,6 +44,13 @@ public interface ShortUrlOpsService {
     boolean exist(String tag);
 
     /**
+     * 设置访问计数
+     * @param tag 短连接
+     * @param count 原始地址
+     */
+    void setCount(String tag,int count);
+
+    /**
      * 短连接访问计数加一
      * @param tag 短连接
      * @return 当前访问计数

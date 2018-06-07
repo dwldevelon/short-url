@@ -10,6 +10,15 @@ import java.util.UUID;
  * @date 2018/6/7
  */
 public class UuidConvertUtil implements ConvertUtil {
+    private final static ConvertUtil CONVERT_UTIL = new UuidConvertUtil();
+
+    private UuidConvertUtil() {
+    }
+
+    public static ConvertUtil getInstance() {
+        return CONVERT_UTIL;
+    }
+
     @Override
     public String convert(String str) {
         String uuid = UUID.randomUUID().toString();

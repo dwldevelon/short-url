@@ -11,6 +11,15 @@ import java.security.NoSuchAlgorithmException;
  * @date 2018/6/7
  */
 public class Md5ConvertUtil implements ConvertUtil {
+    private final static ConvertUtil CONVERT_UTIL = new Md5ConvertUtil();
+
+    private Md5ConvertUtil() {
+    }
+
+    public static ConvertUtil getInstance() {
+        return CONVERT_UTIL;
+    }
+
     @Override
     public String convert(String str) {
         try {
